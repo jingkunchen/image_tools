@@ -5,15 +5,15 @@ from sklearn.metrics import auc
 
 ytrue = []
 yscore = []
-with open('/Users/chenjingkun/Documents/result/newkde/health.txt', 'r') as f:
+with open('/Users/chenjingkun/Documents/result/nvgan/health.txt', 'r') as f:
         for line in f:
             ytrue.append(0)
-            yscore.append(1-float(line))
+            yscore.append(float(line))
 
-with open('/Users/chenjingkun/Documents/result/newkde/lesion.txt', 'r') as f:
+with open('/Users/chenjingkun/Documents/result/nvgan/lesion.txt', 'r') as f:
         for line in f:
             ytrue.append(1)
-            yscore.append(1-float(line))
+            yscore.append(float(line))
 
 print ytrue
 print yscore

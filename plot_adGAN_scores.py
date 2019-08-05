@@ -5,10 +5,10 @@ import time
 # from sklearn.metrics import roc_curve, auc
 health = []
 lesion = []
-with open('/Users/chenjingkun/Documents/code/tools/health.txt', 'r') as f:
+with open('/Users/chenjingkun/Documents/result/nvgan/health.txt', 'r') as f:
     for line in f:
         health.append(float(line))
-with open('/Users/chenjingkun/Documents/code/tools/lesion.txt', 'r') as f:
+with open('/Users/chenjingkun/Documents/result/nvgan/lesion.txt', 'r') as f:
     for line in f:
         lesion.append(float(line))
 
@@ -24,7 +24,7 @@ plt.tick_params(
     bottom=False,      # ticks along the bottom edge are off
     top=False,         # ticks along the top edge are off
     labelbottom=False) # labels along the bottom edge are off
-plt.title(r'$\mathrm{Anogan-Mean}$')
+plt.title(r'$\mathrm{nvgan-Mean}$')
 # plt.axis('off')
 plt.grid(True)
 
