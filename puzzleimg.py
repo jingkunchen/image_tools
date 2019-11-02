@@ -57,7 +57,7 @@ def cropFromFile(file_dir):
         # cv2.imshow('src',crop_img)
         # cv2.waitKey(0)
         crop_imageset.append(crop_img)
-        return or_imageset, crop_imageset
+    return or_imageset, crop_imageset
 
 if __name__ == "__main__":
     file_dir = '/home/chenjingkun/Documents/data/Brodatz/Colored_Brodatz'
