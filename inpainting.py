@@ -30,7 +30,8 @@ if __name__ == "__main__":
                 rs_start_2 = rs_1[i+num[0]]
                 rs_end_2 = rs_1[i+num[0]]+ rs_2[i+num[0]]
             img[rs_start_1:rs_end_1,rs_start_2:rs_end_2] = 255
-        showImage(img)
+            # print(img.shape)
+        # showImage(img)
             
         
         
