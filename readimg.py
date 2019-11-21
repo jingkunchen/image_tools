@@ -17,10 +17,12 @@ def showImage(img):
 
 def readImage(file_path):
     img = cv2.imread(file_path)
+
     return img
 
 def cropImage(img, new_width, new_height, d):
-    img = img[0:new_width, 0:new_height, 0:d]   
+    # print(new_width, new_height, d)
+    img = img[0:new_width, 0:new_height, 0:d]/255.   
     # print(img.shape)
     return img
 
