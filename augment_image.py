@@ -28,7 +28,7 @@ def aug_image(my_image):
 
 if __name__ == "__main__":
     import cv2
-    image = cv2.imread('/home/ben/work/compare_myntra/test_image/test_images/taken_15324282418.jpg')
+    image = cv2.imread('/Users/chenjingkun/Documents/data/uiuc_texture_dataset/train/taken_15324282418.jpg')
     aug_images = aug_image(image)
     aug_images = [aug_images]
     print(len(aug_images))
