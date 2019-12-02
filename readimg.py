@@ -1,10 +1,10 @@
 import cv2
 import os
+import numpy as np
 
-def  getFiles(file_path):
+def getFiles(file_path):
     #a = os.walk(file_path)
     file_list = []
-    
     for root, dirs, files in os.walk(file_path):  
         for file in files: 
             if os.path.splitext(file)[1] == '.jpg':  
@@ -17,12 +17,14 @@ def showImage(img):
 
 def readImage(file_path):
     img = cv2.imread(file_path)
-
     return img
 
 def cropImage(img, new_width, new_height, d):
     # print(new_width, new_height, d)
-    img = img[0:new_width, 0:new_height, 0:d]/255.   
+    # img = img[0:new_width, 0:new_height, 0:d]/255.   
+    # Gaussian normal distribution
+    img = img[0:new_width, 0:new_height, 0:d] - np.std(img[0:new_width, 0:new_height, 0:d])
+    img = img/np.std(img)
     # print(img.shape)
     return img
 
