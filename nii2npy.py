@@ -117,10 +117,14 @@ for pp in range(1, 46):
 
 data_1ch = np.asarray(data_1ch)
 gt_1ch = np.asarray(gt_1ch)
+print("data_1ch:",data_1ch.shape)
+data_1ch = data_1ch[:,:,:,np.newaxis]
+gt_1ch = gt_1ch[:,:,:,np.newaxis]
+print("data_1ch:",data_1ch.shape)
 gt_1ch[gt_1ch == 500] = 1
-gt_1ch[gt_1ch == 200] = 2
-gt_1ch[gt_1ch == 600] = 3
-np.save('C0_data.npy', data_1ch)
-np.save('C0_gt.npy', gt_1ch)
+gt_1ch[gt_1ch == 200] = 1
+gt_1ch[gt_1ch == 600] = 1
+np.save('C0_data_1.npy', data_1ch)
+np.save('C0_gt_1.npy', gt_1ch)
 print("C0_gt:",gt_1ch.shape)
 print(img_count)
