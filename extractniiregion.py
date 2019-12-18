@@ -17,11 +17,8 @@ csv_path = '/Users/chenjingkun/Documents/data/BraTS19/name_mapping.csv'
 shake_pixel = 8
 def show_img(data):
     for i in range(data.shape[0]):
-        
         print(np.max(data[i, :, :]))
         print(np.min(data[i, :, :]))
-        
-        
         io.imshow(data[i, :, :], cmap='gray')
         io.show()
 def show_img_single(data):
@@ -72,7 +69,7 @@ def nii2NpySlice(data_path, gt_path):
                         tmp = tmp_data.flatten()
                         tmp_array_1 = data_array_1[count, shake_pixel+i*32:shake_pixel+(i+1)*32, shake_pixel+j*32:shake_pixel+(j+1)*32]
                         # print("health_Counter(tmp)[0]:",Counter(tmp)[0])
-                        if(Counter(tmp)[0]>256):
+                        if(Counter(tmp)[0]>10):
                             pass
                         else:
                             new_health_array.append(tmp_array_1)
@@ -90,23 +87,26 @@ def nii2NpySlice(data_path, gt_path):
             for i in range(0,7):
                 for j in range(0,7):
                     tmp_gt = gt[shake_pixel+i*32:shake_pixel+(i+1)*32,shake_pixel+j*32:shake_pixel+(j+1)*32]
-                    tmp_data = data_array[count, shake_pixel+i*32:shake_pixel+(i+1)*32, shake_pixel+j*32:shake_pixel+(j+1)*32]
+                    # tmp_data = data_array[count, shake_pixel+i*32:shake_pixel+(i+1)*32, shake_pixel+j*32:shake_pixel+(j+1)*32]
                     tmp_array_1 = data_array_1[count, shake_pixel+i*32:shake_pixel+(i+1)*32, shake_pixel+j*32:shake_pixel+(j+1)*32]
-
                     if np.all(tmp_gt == 0):
-                        pass
+                            pass
                     else:
-                        tmp = tmp_gt.flatten()
-                        # print("lesion_Counter(tmp)[0]:",Counter(tmp)[0])
-                        #90%,50%,10%$
-                        if(Counter(tmp)[0]>256):
+                        tmp_check = tmp_array_1.flatten()
+                        if(Counter(tmp_check)[0]>10):
                             pass
                         else:
-                            new_lesion_array.append(tmp_array_1)
-                            io.imsave(
-                                fname='{}{}'.format(lesion_path, str(count)+'_'+str(shake_pixel+i*32)+'_'+str(shake_pixel+i*32+32)+'_'+str(shake_pixel+j*32)+'_'+str(shake_pixel+j*32+32)+'.jpg'),
-                                arr=tmp_array_1
-                            )
+                            tmp = tmp_gt.flatten()
+                            #512-1024, 768-1024, 1014-1024, 256-1024
+                            if(Counter(tmp)[0]>512):
+                                pass
+                            else:
+                                new_lesion_array.append(tmp_array_1)
+                                io.imsave(
+                                    fname='{}{}'.format(lesion_path, str(count)+'_'+str(shake_pixel+i*32)+'_'+str(shake_pixel+i*32+32)+'_'+str(shake_pixel+j*32)+'_'+str(shake_pixel+j*32+32)+'.jpg'),
+                                    arr=tmp_array_1
+                                )
+                            
         count = count + 1
     new_health_data = np.asarray(new_health_array)
     # np.save('health.npy', new_health_data)
@@ -136,8 +136,8 @@ def main():
             print("lesion_array:",lesion_array.shape)
         except:
             print("------------error----------------")
-    np.save('health_train.npy', health_array)
-    np.save('lesion_train.npy', lesion_array)
+    np.save('health.npy', health_array)
+    np.save('lesion.npy', lesion_array)
     
         
 

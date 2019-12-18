@@ -5,23 +5,23 @@ from sklearn.metrics import auc
 
 ytrue = []
 yscore = []
-with open('/Users/chenjingkun/Documents/result/nvgan/health.txt', 'r') as f:
+with open('health.txt', 'r') as f:
         for line in f:
             ytrue.append(0)
             yscore.append(float(line))
 
-with open('/Users/chenjingkun/Documents/result/nvgan/lesion.txt', 'r') as f:
+with open('lesion.txt', 'r') as f:
         for line in f:
             ytrue.append(1)
             yscore.append(float(line))
 
-print ytrue
-print yscore
+print(ytrue)
+print(yscore)
 
 fpr,tpr,threshold = roc_curve(ytrue, yscore, pos_label=1)
-print "fpr:",fpr
-print "tpr:",tpr
-print "threshold:",threshold
+print("fpr:",fpr)
+print("tpr:",tpr)
+print("threshold:",threshold)
 
 roc_auc = auc(fpr,tpr)
 

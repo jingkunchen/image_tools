@@ -3,20 +3,20 @@ import numpy as np
 import random
 
 
-def inPainting(img):
-    num = random.sample(range(5, 15 ),1)
-    rs_1 = random.sample(range(10,214),num[0]*2)
+def inPainting(img,length):
+    num = random.sample(range(5, 15),1)
+    rs_1 = random.sample(range(10,length-10),num[0]*2)
     rs_2 = random.sample(range(5,35),num[0]*2)
     # rs_start = []
     # rs_end = []
     for i in range(0,num[0]):
-        if (rs_1[i] +rs_2[i]) > 224:
+        if (rs_1[i] +rs_2[i]) > length:
             rs_start_1 = rs_1[i] - rs_2[i]
             rs_end_1 = rs_1[i]
         else:
             rs_start_1 = rs_1[i]
             rs_end_1 = rs_1[i]+ rs_2[i]
-        if (rs_1[i+num[0]] +rs_2[i+num[0]]) > 224:
+        if (rs_1[i+num[0]] +rs_2[i+num[0]]) > length:
             rs_start_2 = rs_1[i+num[0]] - rs_2[i+num[0]]
             rs_end_2 = rs_1[i+num[0]]
         else:
@@ -26,7 +26,7 @@ def inPainting(img):
     return img
 
 def outPainting(img):
-    num = random.sample(range(3, 8 ),4)
+    num = random.sample(range(3, 8),4)
     rs_1_w = random.sample(range(0,224),num[0])
     rs_1_w_2 = random.sample(range(0,60),num[0])
     rs_1_h = random.sample(range(0,194),num[0])
@@ -60,8 +60,6 @@ def outPainting(img):
     # for i in range(0,num[3]):
     #     img[rs_4_w[i]:0,0:rs_4_h[i]] = 255
     return img
-
-        
 
 if __name__ == "__main__":
     file_path = '/home/chenjingkun/Documents/data/uiuc_texture_dataset/train'
