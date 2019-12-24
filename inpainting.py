@@ -93,15 +93,5 @@ if __name__ == "__main__":
             # print(img.shape)
         # showImage(img)
             
-        
-        
-
-            
-            
-
-        
-               
-        
-    
     # data_set =  np.array(image_list)
     # print( data_set.shape)

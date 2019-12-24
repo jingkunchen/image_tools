@@ -1,1 +1,0 @@
-nohup python main.py -input_height 64 --input_width 64 --output_height 64 --output_width 64 --dataset=skin_64_64 --train --input_fname_pattern "*.jpg" >/home/jingkunchen/anogan-tf/skin_64_64.log 2>&1 &
