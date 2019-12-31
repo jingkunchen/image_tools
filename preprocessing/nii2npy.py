@@ -33,7 +33,6 @@ def show_img_single(data):
         io.imshow(data[:,:], cmap = 'gray')
         io.show()
 
-
 # label transform, 500-->1, 200-->2, 600-->3
 
 data_1ch = []
@@ -122,9 +121,11 @@ data_1ch = data_1ch[:,:,:,np.newaxis]
 gt_1ch = gt_1ch[:,:,:,np.newaxis]
 print("data_1ch:",data_1ch.shape)
 gt_1ch[gt_1ch == 500] = 1
-gt_1ch[gt_1ch == 200] = 1
-gt_1ch[gt_1ch == 600] = 1
-np.save('C0_data_1.npy', data_1ch)
-np.save('C0_gt_1.npy', gt_1ch)
+gt_1ch[gt_1ch == 200] = 2
+gt_1ch[gt_1ch == 600] = 3
+np.save('C0_data.npy', data_1ch)
+np.save('C0_gt.npy', gt_1ch)
+sitk.WriteImage(sitk.GetImageFromArray(data_1ch),"C0_data.nii.gz")
+sitk.WriteImage(sitk.GetImageFromArray(gt_1ch),"C0_gt.nii.gz")
 print("C0_gt:",gt_1ch.shape)
 print(img_count)
