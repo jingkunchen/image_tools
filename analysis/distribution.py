@@ -16,6 +16,6 @@ def drawCumulativeHist(heights):
     pyplot.title('Heights Of Male Students')
     pyplot.show()
 
-grades=np.load('../preprocessing/data_array_lge.npy')[0,:,:]
-
+grades=np.load('C0_data_1.npy')[0,:,:,0]
+print(grades.shape)
 drawCumulativeHist(grades)

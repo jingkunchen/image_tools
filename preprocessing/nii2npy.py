@@ -14,7 +14,7 @@ import skimage.io as io
 from skimage.morphology import square
 from skimage.morphology import dilation
 
-thresh = 1
+
 rows = 224
 cols = 224
 xmin = 1 
@@ -47,8 +47,7 @@ for pp in range(1, 46):
     data_name = img_dir + '/patient' + str(pp) + '_C0.nii.gz'
     gt_name = gt_dir_1 + '/patient' + str(pp) + '_C0_manual.nii.gz'
     img = sitk.ReadImage(os.path.join(gt_name))
-    data_array = sitk.GetArrayFromImage(sitk.ReadImage(
-        os.path.join(data_name)))
+    data_array = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(data_name)))
     gt_array = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(gt_name)))
     
     img_count += gt_array.shape[0]
@@ -86,6 +85,7 @@ for pp in range(1, 46):
     #     print("error:",gt_array.shape, int(gt_array.shape[1]) == 400)
     
     mask = np.zeros(np.shape(data_array), dtype='float32')
+    thresh = 1
     mask[data_array >= thresh] = 1
     mask[data_array < thresh] = 0
     for iii in range(np.shape(data_array)[0]):

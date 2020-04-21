@@ -1,15 +1,15 @@
 import os
 import numpy as np
 import cv2
-from readimg import  readImage,  getFiles, cropImage
-from inpainting import inPainting, outPainting
+
+
 import random
 import copy
 import io
 from scipy import stats
 
-width = 64
-hight = 64
+width = 32
+hight = 32
 width_start = 10
 hight_start = 10
 channel = 1
@@ -24,13 +24,30 @@ def mergeNpy(img_set1, img_set2):
     return img_set
 
 def zscore_calculate(img_dir):
-    file_list = getFiles(img_dir)
-    tmp = readImage(file_list[0])
-    all_image = tmp[np.newaxis,:,:,:1]
+    i = 0
+    for root1, dirs1, files1 in os.walk(img_dir):  
+        root = root1
+        file = files1
+    file_list = []
+    for i in file:
+        file_list.append(root+'/'+i)
+    print(file_list[0])
+    # file_list = getFiles(img_dir)
+    tmp = cv2.imread(file_list[0])
+    tmp = cv2.resize(tmp[:,:,0], (512,512), interpolation=cv2.INTER_AREA) 
+    print(tmp.shape)
+    all_image = tmp[np.newaxis,:,:]
     for i in file_list[1:]:
-        tmp = readImage(i)
-        all_image = mergeNpy(all_image, tmp[np.newaxis,:,:,:1])
-        X_scaled = stats.zscore(all_image)
+        print(i)
+        tmp = cv2.imread(i)
+      
+        tmp = cv2.resize(tmp[:,:,0], (512,512), interpolation=cv2.INTER_AREA) 
+        # cv2.imshow("lesion.png",tmp)
+        # cv2.waitKey(0)
+        # print(i)
+        all_image = mergeNpy(all_image, tmp[np.newaxis,:,:])
+        print(all_image.shape)
+    X_scaled = stats.zscore(all_image)
     return X_scaled
 
     # img = cropImage(readImage(file_list[0]), start_width, start_hight, width, hight, channel)
@@ -43,16 +60,18 @@ def zscore_calculate(img_dir):
 
 def inPaintingNpy(img_set):
     img_set_tmp = copy.deepcopy(img_set)
-    count = len(img_set_tmp)
+    count = img_set_tmp.shape[0]
+    print("len:",len(img_set_tmp))
     for j in range(count):
-        num = random.sample(range(3, 5),1)
+        num = random.sample(range(5, 10),1)
         print("num:",num)
         rs_1 = random.sample(range(0,hight-3),num[0]*2)
         print("rs_1:",rs_1)
-        rs_2 = random.sample(range(0,10),num[0]*2)
-        print("rs_2:",rs_2)
-        file_num = random.sample(range(1,count),num[0])
-        print("file_num:",file_num)
+        rs_2 = [random.randint(3, 6) for __ in range(num[0]*2)]
+        # rs_2 = random.sample(range(20,40),num[0]*2)
+        # print("rs_2:",rs_2)
+        # file_num = random.sample(range(1,count),num[0])
+        # print("file_num:",file_num)
         for i in range(0,num[0]):
             if (rs_1[i] +rs_2[i]) > width:
                 rs_start_1 = rs_1[i] - rs_2[i]
@@ -67,14 +86,14 @@ def inPaintingNpy(img_set):
                 rs_start_2 = rs_1[i+num[0]]
                 rs_end_2 = rs_1[i+num[0]]+ rs_2[i+num[0]]
             # img_set_tmp[j,rs_start_1:rs_end_1,rs_start_2:rs_end_2,:] = img_set[file_num[i],rs_start_1:rs_end_1,rs_start_2:rs_end_2,:]
-            img_set_tmp[j,rs_start_1:rs_end_1,rs_start_2:rs_end_2,:] = 255
+            img_set_tmp[j,rs_start_1:rs_end_1,rs_start_2:rs_end_2,:] = 0
     return img_set_tmp
 
 def outPaintingNpy(img_set):
     img_set_tmp = copy.deepcopy(img_set)
     count = len(img_set_tmp)
     for j in range(count):
-        num = random.sample(range(3, 8),4)
+        num = random.sample(range(10, 20),10)
         
         rs_1_w = random.sample(range(0,width),num[0])
         rs_1_w_2 = random.sample(range(0,60),num[0])
@@ -118,26 +137,27 @@ if __name__ == "__main__":
     merge = 0
     img_list = []
     if translate:
-        img_dir = '/Users/chenjingkun/Documents/data/uiuc_texture_dataset/train'
+        img_dir = '/Users/chenjingkun/Documents/data/COVID/covid/original'
         img_array = zscore_calculate(img_dir)
         
-        for i in img_array:
-            tmp = cropImage(i, width_start, width_start + width, hight_start, hight_start + hight, channel)
-            img_list.append(tmp)
+        # for i in img_array:
+        #     # tmp = cropImage(i, width_start, width_start + width, hight_start, hight_start + hight, channel)
+        #     cv2.imshow("1pyt",i)
+        #     img_list.append(i)
 
         crop_array = np.asarray(img_list)
         
-        np.save("uiuc_train_or_64_64.npy",img_array)
+        np.save("covid_original.npy",img_array)
 
     if painting:
-        npy_file = "uiuc_texture_train.npy"
-        img_set = np.load(npy_file)
+        npy_file = "skin_health_array_32_32_train_25_100.npy"
+        img_set = np.load(npy_file)[:,:,:,:]
         # img_set = img_set[:,:,:,np.newaxis]
         new_img_set = inPaintingNpy(img_set)
-
+        print(new_img_set.shape)
         # print(new_img_set.shape)
-        show_img(new_img_set)
-        np.save("uiuc_texture_train_inpainting.npy",new_img_set)
+        # show_img(new_img_set)
+        np.save("skin_health_array_32_32_train_25_100_inpainting.npy",new_img_set)
 
     if merge:
         npy_path1 = "/Users/chenjingkun/Documents/data/texture/uiuc_texture_train.npy"
