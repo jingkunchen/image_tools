@@ -12,7 +12,7 @@ transform1 = transforms.Compose([
 )
  
 # calculate means and std
-testPath = '/Users/chenjingkun/Documents/data/COVID/in/'
+testPath = '/Users/chenjingkun/Documents/data/COVID/out/'
 means = 0
 stdevs = 0
 fileNames = os.listdir(testPath)
